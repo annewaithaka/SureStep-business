@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+/* Public pages */
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import About from "./pages/About";
+import Events from "./pages/Events";
+import Contact from "./pages/Contact";
+import AIReadiness from "./pages/AIReadiness";
+
+/* Dashboard */
+import DashboardLayout from "./pages/dashboard/DashboardLayout";
+import DashboardHome from "./pages/dashboard/DashboardHome";
+import DashboardLeads from "./pages/dashboard/DashboardLeads";
+import DashboardAIReadiness from "./pages/dashboard/DashboardAIReadiness";
+import DashboardMessages from "./pages/dashboard/DashboardMessages";
+import Login from "./pages/Login";
+
+
+//Auth
+import PrivateRoute from "./auth/PrivateRoute";
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <Routes>
+        {/* 🌍 Public Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/ai-readiness" element={<AIReadiness />} />
+        <Route path="/login" element={<Login />} />
+
+
+        {/* 📊 Protected Dashboard Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <DashboardLayout />
+            </PrivateRoute>
+          }
+        >
+          <Route index element={<DashboardHome />} />
+          <Route path="leads" element={<DashboardLeads />} />
+          <Route path="ai-readiness" element={<DashboardAIReadiness />} />
+          <Route path="contacts" element={<DashboardMessages />} />
+        </Route>
+      </Routes>
+
+      <ToastContainer position="top-right" autoClose={3000} />
+    </Router>
+  );
 }
 
-export default App
+export default App;
