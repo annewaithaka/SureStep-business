@@ -5,6 +5,7 @@ from .models import ContactMessage
 
 contact_bp = Blueprint("contact", __name__, url_prefix="/contact")
 
+
 @contact_bp.route("", methods=["POST"])
 def submit_contact():
     data = request.get_json()
@@ -24,6 +25,8 @@ def submit_contact():
 
     contact_message = ContactMessage(
         lead_id=lead.id,
+        name=name,
+        email=email,
         message=message
     )
 
