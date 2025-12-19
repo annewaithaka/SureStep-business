@@ -9,7 +9,7 @@ const DashboardMessages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const res = await api.get("/messages");
+        const res = await api.get("/api/dashboard/messages");
         setMessages(res.data);
       } catch (err) {
         console.error("Failed to fetch messages:", err);

@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify
 from modules.leads.models import Lead
+from modules.contact.models import ContactMessage
+
 
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
@@ -20,3 +22,20 @@ def get_leads():
         })
 
     return jsonify(result), 200
+
+@dashboard_bp.route("/messages", methods=["GET"])
+def get_messages():
+    messages = ContactMessage.query.order_by(ContactMessage.created_at.desc()).all()
+
+    data = [
+        {
+            "id": msg.id,
+            "name": msg.name,
+            "email": msg.email,
+            "message": msg.message,
+            "created_at": msg.created_at.isoformat(),
+        }
+        for msg in messages
+    ]
+
+    return jsonify(data), 200

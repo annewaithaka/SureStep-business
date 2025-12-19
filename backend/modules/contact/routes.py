@@ -3,6 +3,7 @@ from extensions import db
 from modules.leads.models import Lead
 from .models import ContactMessage
 
+
 contact_bp = Blueprint("contact", __name__, url_prefix="/contact")
 
 
