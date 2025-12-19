@@ -1,4 +1,5 @@
 import React from "react";
+import "../css/landing.css";
 
 const ProcessSection = () => {
   return (

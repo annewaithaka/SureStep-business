@@ -8,7 +8,7 @@ const TopBar = ({ title = "Dashboard" }) => {
 
   const handleLogout = () => {
     removeToken();
-    navigate("/login");
+    navigate("/");
   };
 
   return (

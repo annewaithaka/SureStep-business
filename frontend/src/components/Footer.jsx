@@ -9,8 +9,13 @@ const Footer = () => {
         <div className="footer-brand">
           <h2>SureStep Business Advisors</h2>
           <p>
-            Helping 7 - 8 figure service companies simplify operations, integrate AI systems, and scale without chaos.
+            Helping 7 - 8 figure service companies simplify{" "}
+            <Link to="/dashboard" className="footer-inline-link">
+              operations
+            </Link>
+            , integrate AI systems, and scale without chaos.
           </p>
+
         </div>
 
         <div className="footer-links">

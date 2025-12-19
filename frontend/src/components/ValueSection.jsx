@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaHandshake, FaChartLine, FaShieldAlt } from "react-icons/fa";
+import "../css/landing.css";
 
 const ValueSection = () => {
   const values = [

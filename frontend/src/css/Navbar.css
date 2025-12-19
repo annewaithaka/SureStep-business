@@ -1,7 +1,7 @@
 /* frontend/src/css/Navbar.css */
 
 .navbar {
-  background-color: #0d3b66; /* SureStep primary color */
+  background-color: #fff; /* SureStep primary color */
   height: 70px;
   display: flex;
   justify-content: center;
@@ -23,7 +23,7 @@
 }
 
 .navbar-logo {
-  color: #fff;
+  color: #000;
   justify-self: flex-start;
   cursor: pointer;
   font-size: 1.5rem;
@@ -33,7 +33,7 @@
 
 .menu-icon {
   display: none;
-  color: #fff;
+  color: #000;
   font-size: 1.8rem;
   cursor: pointer;
 }
@@ -50,7 +50,7 @@
 }
 
 .nav-links {
-  color: #fff;
+  color: #000;
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -64,8 +64,8 @@
 }
 
 .nav-cta {
-  background-color: #ffd166;
-  color: #0d3b66;
+  background-color: #B10F3A;
+  color: #fff;
   padding: 8px 16px;
   border-radius: 4px;
   margin-left: 8px;

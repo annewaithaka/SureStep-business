@@ -50,3 +50,14 @@
 .footer-policy span {
   margin: 0 0.5rem;
 }
+
+.footer-inline-link {
+  color: #2563eb;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.footer-inline-link:hover {
+  text-decoration: none;
+  color: #1e40af;
+}

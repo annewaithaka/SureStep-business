@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaBriefcase, FaShieldAlt, FaUsers } from "react-icons/fa";
+import "../css/landing.css";
 
 const ServicesSection = () => {
   const services = [
