@@ -30,13 +30,13 @@ const Navbar = () => {
             </Link>
           </li>
           <li className="nav-item">
-            <Link
-              to="/services"
+            <a
+              href="#services"
               className="nav-links"
               onClick={() => setIsOpen(false)}
             >
               Services
-            </Link>
+            </a>
           </li>
           <li className="nav-item">
             <Link

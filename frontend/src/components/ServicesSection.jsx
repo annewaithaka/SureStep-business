@@ -23,9 +23,9 @@ const ServicesSection = () => {
   ];
 
   return (
-    <section className="features">
+    <section id="services" className="features">
       <h2>What We Do</h2>
-
+  
       <div className="feature-grid">
         {services.map((item, idx) => (
           <motion.div
@@ -43,7 +43,7 @@ const ServicesSection = () => {
         ))}
       </div>
     </section>
-  );
+  );  
 };
 
 export default ServicesSection;
