@@ -27,6 +27,7 @@ def create_app():
     from modules.notifications.routes import notifications_bp
     from modules.ai_readiness.routes import ai_bp
 
+
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
     app.register_blueprint(leads_bp, url_prefix="/api/leads")
@@ -35,6 +36,7 @@ def create_app():
     app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio")
     app.register_blueprint(notifications_bp, url_prefix="/api/notifications")
     app.register_blueprint(ai_bp, url_prefix="/api/ai-readiness")
+
 
     @app.route("/")
     def index():
