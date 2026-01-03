@@ -6,6 +6,8 @@ import ValueSection from "../components/ValueSection";
 import ProcessSection from "../components/ProcessSection";
 import CTASection from "../components/CTASection";
 import Footer from "../components/Footer";
+import AboutPreview from "../components/AboutPreview";
+
 
 const Home = () => {
   return (
@@ -15,6 +17,7 @@ const Home = () => {
       <ServicesSection />
       <ValueSection />
       <ProcessSection />
+      <AboutPreview  />
       <CTASection />
       <Footer />
     </>

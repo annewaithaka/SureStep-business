@@ -5,7 +5,7 @@ import "../css/landing.css";
 
 const HeroSection = () => {
   return (
-    <section className="hero">
+    <section id="home" className="hero">
       <div className="hero-overlay" />
 
       <motion.div
@@ -14,7 +14,9 @@ const HeroSection = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <span className="hero-eyebrow">Business Growth • Compliance • Strategy</span>
+        <span className="hero-eyebrow">
+          Business Growth • Compliance • Strategy
+        </span>
 
         <h1>
           Helping Businesses Take <span>the Right Next Step</span>

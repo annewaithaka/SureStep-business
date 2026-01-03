@@ -10,6 +10,8 @@
   position: sticky;
   top: 0;
   z-index: 999;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .navbar-container {
@@ -75,6 +77,58 @@
   background-color: #f4c430;
   color: #0d3b66;
 }
+
+/* Active nav link (scroll-based) */
+.nav-links.active {
+  color: #B10F3A;
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-links.active::after {
+  content: "";
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 2px;
+  background-color: #B10F3A;
+  border-radius: 2px;
+}
+
+/* Prevent CTA from getting underline */
+.nav-links.nav-cta::after {
+  display: none;
+}
+
+/* Make nav buttons look like links */
+.nav-menu button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Ensure buttons behave like nav links */
+.nav-menu button.nav-links {
+  text-decoration: none;
+}
+/* Make nav buttons match nav link layout exactly */
+.nav-menu button.nav-links {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  height: 100%;
+}
+
 
 /* Mobile responsive */
 @media screen and (max-width: 768px) {

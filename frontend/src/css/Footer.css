@@ -5,6 +5,10 @@
   font-family: 'Helvetica', sans-serif;
 }
 
+.footer {
+  margin-top: auto;
+}
+
 .footer a {
   color: #fff;
   text-decoration: none;
@@ -52,12 +56,16 @@
 }
 
 .footer-inline-link {
-  color: #2563eb;
+  color: #fff;
   text-decoration: underline;
   font-weight: 500;
 }
 
 .footer-inline-link:hover {
-  text-decoration: none;
-  color: #1e40af;
+  color: #ffd166; /* subtle accent */
+}
+
+.footer,
+.footer * {
+  color: #fff;
 }
