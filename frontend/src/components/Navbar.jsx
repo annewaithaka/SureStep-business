@@ -54,7 +54,12 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* Logo */}
         <Link to="/" className="navbar-logo">
-          SureStep Business Advisors
+          <img
+            src="/images/surestep-logo.jpg"
+            alt="SureStep Business Advisors"
+            className="navbar-logo-img"
+          />
+          <span className="navbar-logo-text">SureStep Business Advisors</span>
         </Link>
 
         {/* Mobile menu */}
@@ -74,12 +79,15 @@ const Navbar = () => {
           </li>
 
           <li className="nav-item">
-            <button
-              className={navLinkClass("services")}
-              onClick={() => goToSection("services")}
+            <Link
+              to="/services"
+              className={`nav-links ${
+                isActiveRoute("/services") ? "active" : ""
+              }`}
+              onClick={() => setIsOpen(false)}
             >
               Services
-            </button>
+            </Link>
           </li>
 
           <li className="nav-item">
@@ -94,7 +102,9 @@ const Navbar = () => {
           <li className="nav-item">
             <Link
               to="/events"
-              className={`nav-links ${isActiveRoute("/events") ? "active" : ""}`}
+              className={`nav-links ${
+                isActiveRoute("/events") ? "active" : ""
+              }`}
               onClick={() => setIsOpen(false)}
             >
               Events
@@ -104,7 +114,9 @@ const Navbar = () => {
           <li className="nav-item">
             <Link
               to="/contact"
-              className={`nav-links ${isActiveRoute("/contact") ? "active" : ""}`}
+              className={`nav-links ${
+                isActiveRoute("/contact") ? "active" : ""
+              }`}
               onClick={() => setIsOpen(false)}
             >
               Contact

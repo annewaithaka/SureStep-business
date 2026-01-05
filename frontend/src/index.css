@@ -26,3 +26,14 @@ h3 {
 p {
   color: var(--color-muted);
 }
+
+.Toastify {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  width: auto; /* or 100% if you like full-width */
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+}
+
