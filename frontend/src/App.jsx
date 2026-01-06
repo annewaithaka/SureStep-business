@@ -9,6 +9,9 @@ import About from "./pages/About";
 import Events from "./pages/Events";
 import Contact from "./pages/Contact";
 import AIReadiness from "./pages/AIReadiness";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+
 
 /* Dashboard */
 import DashboardLayout from "./pages/dashboard/DashboardLayout";
@@ -35,6 +38,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/ai-readiness" element={<AIReadiness />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
 
 
         {/* 📊 Protected Dashboard Routes */}
