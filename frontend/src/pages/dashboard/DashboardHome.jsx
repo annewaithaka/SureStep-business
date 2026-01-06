@@ -15,7 +15,7 @@ const DashboardHome = () => {
       try {
         const [leadsRes, messagesRes, aiRes] = await Promise.all([
           api.get("/leads/count"),
-          api.get("/messages/count"),
+          api.get("/contact/count"),
           api.get("/ai-readiness/count"),
         ]);
         setCounts({

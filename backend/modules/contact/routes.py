@@ -1,3 +1,4 @@
+# backend/modules/contact/routes.py
 from flask import Blueprint, request, jsonify
 from extensions import db
 from modules.leads.models import Lead
@@ -35,3 +36,11 @@ def submit_contact():
     db.session.commit()
 
     return jsonify({"message": "Message saved"}), 201
+
+
+# backend/modules/contact/routes.py
+@contact_bp.route("/count", methods=["GET"])
+def messages_count():
+    from .models import ContactMessage
+    count = ContactMessage.query.count()
+    return jsonify({"count": count}), 200

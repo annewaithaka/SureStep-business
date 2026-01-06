@@ -41,3 +41,8 @@ def get_lead(lead_id):
             "answers": lead.ai_readiness.answers
         } if lead.ai_readiness else None
     }), 200
+
+@leads_bp.route("/count", methods=["GET"])
+def leads_count():
+    count = Lead.query.count()
+    return jsonify({"count": count}), 200

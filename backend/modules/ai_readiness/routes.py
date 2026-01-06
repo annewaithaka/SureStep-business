@@ -78,3 +78,10 @@ def get_all_submissions():
         })
     return jsonify(result), 200
 
+
+# backend/modules/ai_readiness/routes.py
+@ai_bp.route("/count", methods=["GET"])
+def ai_readiness_count():
+    from modules.ai_readiness.models import AIReadiness
+    count = AIReadiness.query.count()
+    return jsonify({"count": count}), 200
