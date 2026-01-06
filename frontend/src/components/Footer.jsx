@@ -24,15 +24,7 @@ const Footer = () => {
             <li><Link to="/ai-readiness">AI Readiness Review</Link></li>
             <li><Link to="/services">Automation & System Design</Link></li>
             <li><Link to="/services#team-training">Team Training</Link></li>
-            <li>
-              <a
-                href="https://surestepbusiness.com/knowledge-hub"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Knowledge Hub AI
-              </a>
-            </li>
+            <li><Link to="/services">Knowledge Hub AI</Link></li>
           </ul>
         </div>
       </div>
