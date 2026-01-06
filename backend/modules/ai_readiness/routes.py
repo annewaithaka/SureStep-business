@@ -1,3 +1,4 @@
+# backend/modules/ai_readiness/routes.py
 from flask import Blueprint, request, jsonify
 from extensions import db
 
@@ -58,3 +59,22 @@ def submit_ai_readiness():
         "status": readiness_status(percentage),
         "cta": cta_message(percentage)
     }, 201
+
+
+# New route to get all AI readiness submissions for dashboard
+@ai_bp.route("", methods=["GET"])  # notice empty string instead of "/"
+def get_all_submissions():
+    submissions = AIReadiness.query.all()
+    result = []
+    for s in submissions:
+        lead = Lead.query.get(s.lead_id)
+        result.append({
+            "id": s.id,
+            "company_name": lead.name if lead else "N/A",
+            "score": s.score,
+            "percentage": s.percentage,
+            "company_size": getattr(s, "company_size", "N/A"),
+            "answers_summary": getattr(s, "answers_summary", str(s.answers)),
+        })
+    return jsonify(result), 200
+

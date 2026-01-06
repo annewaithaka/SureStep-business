@@ -84,12 +84,12 @@ const AIReadiness = () => {
             <>
               <h1>Is Your Business an Asset or a Job?</h1>
               <p>
-                If you disappeared from your business for 30 days, would it grow,
-                survive, or collapse?
+                If you disappeared from your business for 30 days, would it
+                grow, survive, or collapse?
               </p>
               <p>
-                This 2-minute assessment reveals how dependent your business is on
-                you — and what it’s costing you in freedom and exit value.
+                This 2-minute assessment reveals how dependent your business is
+                on you — and what it’s costing you in freedom and exit value.
               </p>
               <button
                 className="ai-btn ai-btn-primary"
@@ -137,27 +137,33 @@ const AIReadiness = () => {
           )}
 
           {/* QUESTIONS */}
-          {step === "questions" && questions.length > 0 && (
+          {step === "questions" && (
             <>
-              <p className="ai-progress">
-                Question {currentIndex + 1} of {questions.length}
-              </p>
-              <h3>{questions[currentIndex].text}</h3>
+              {questions.length === 0 ? (
+                <p className="ai-loading">Loading questions...</p>
+              ) : (
+                <>
+                  <p className="ai-progress">
+                    Question {currentIndex + 1} of {questions.length}
+                  </p>
+                  <h3>{questions[currentIndex].text}</h3>
 
-              <div className="ai-answer-buttons">
-                <button
-                  className="ai-btn ai-btn-primary"
-                  onClick={() => answerQuestion(1)}
-                >
-                  Yes
-                </button>
-                <button
-                  className="ai-btn ai-btn-outline"
-                  onClick={() => answerQuestion(0)}
-                >
-                  No
-                </button>
-              </div>
+                  <div className="ai-answer-buttons">
+                    <button
+                      className="ai-btn ai-btn-primary"
+                      onClick={() => answerQuestion(1)}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      className="ai-btn ai-btn-outline"
+                      onClick={() => answerQuestion(0)}
+                    >
+                      No
+                    </button>
+                  </div>
+                </>
+              )}
             </>
           )}
 
