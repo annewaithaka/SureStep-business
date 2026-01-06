@@ -1,3 +1,4 @@
+#backend/modules/ai_readiness/utils.py
 def calculate_score(answers: dict):
     """
     answers example:
