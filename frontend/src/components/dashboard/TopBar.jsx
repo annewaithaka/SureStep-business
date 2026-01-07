@@ -3,7 +3,7 @@ import React from "react";
 import { removeToken } from "../../auth/auth";
 import { useNavigate } from "react-router-dom";
 
-const TopBar = ({ title = "Dashboard", onMenuClick }) => {
+const TopBar = ({ title = "Dashboard", onMenuClick, isMobile }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,9 +14,11 @@ const TopBar = ({ title = "Dashboard", onMenuClick }) => {
   return (
     <header style={styles.topbar}>
       <div style={styles.left}>
-        <button style={styles.menuButton} onClick={onMenuClick}>
-          ☰
-        </button>
+        {isMobile && (
+          <button style={styles.menuButton} onClick={onMenuClick}>
+            ☰
+          </button>
+        )}
         <h1 style={styles.title}>{title}</h1>
       </div>
 
@@ -47,7 +49,6 @@ const styles = {
     background: "none",
     border: "none",
     cursor: "pointer",
-    display: "none", // shown via media query logic below
   },
   title: {
     fontSize: "18px",

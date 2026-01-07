@@ -46,8 +46,10 @@ const DashboardLayout = () => {
       <div style={styles.main}>
         <TopBar
           title="Dashboard"
+          isMobile={isMobile}
           onMenuClick={() => setSidebarOpen(true)}
         />
+
 
         <main style={styles.content}>
           <Outlet />
