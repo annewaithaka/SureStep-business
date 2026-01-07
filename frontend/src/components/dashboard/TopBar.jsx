@@ -3,7 +3,7 @@ import React from "react";
 import { removeToken } from "../../auth/auth";
 import { useNavigate } from "react-router-dom";
 
-const TopBar = ({ title = "Dashboard" }) => {
+const TopBar = ({ title = "Dashboard", onMenuClick }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,7 +13,13 @@ const TopBar = ({ title = "Dashboard" }) => {
 
   return (
     <header style={styles.topbar}>
-      <h1 style={styles.title}>{title}</h1>
+      <div style={styles.left}>
+        <button style={styles.menuButton} onClick={onMenuClick}>
+          ☰
+        </button>
+        <h1 style={styles.title}>{title}</h1>
+      </div>
+
       <button onClick={handleLogout} style={styles.logoutButton}>
         Logout
       </button>
@@ -29,7 +35,19 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: "0 20px",
+    padding: "0 16px",
+  },
+  left: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+  },
+  menuButton: {
+    fontSize: "22px",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    display: "none", // shown via media query logic below
   },
   title: {
     fontSize: "18px",
@@ -38,7 +56,7 @@ const styles = {
   },
   logoutButton: {
     padding: "6px 12px",
-    backgroundColor: "#ef4444",
+    backgroundColor: "#B10F3A",
     color: "#fff",
     border: "none",
     borderRadius: "6px",

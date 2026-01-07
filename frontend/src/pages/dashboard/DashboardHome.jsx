@@ -1,4 +1,3 @@
-// frontend/src/pages/dashboard/DashboardHome.jsx
 import React, { useEffect, useState } from "react";
 import api from "../../api/axiosConfig";
 
@@ -38,43 +37,81 @@ const DashboardHome = () => {
 
       {/* Stats Cards */}
       <div style={styles.cardsContainer}>
-        <div style={styles.card}>
-          {loading ? "Loading..." : `Total Leads: ${counts.leads}`}
-        </div>
-        <div style={styles.card}>
-          {loading ? "Loading..." : `Total Contact Messages: ${counts.messages}`}
-        </div>
-        <div style={styles.card}>
-          {loading ? "Loading..." : `AI Readiness Submissions: ${counts.aiReadiness}`}
-        </div>
+        <StatCard
+          title="Total Leads"
+          count={counts.leads}
+          loading={loading}
+        />
+        <StatCard
+          title="Contact Messages"
+          count={counts.messages}
+          loading={loading}
+        />
+        <StatCard
+          title="AI Readiness"
+          count={counts.aiReadiness}
+          loading={loading}
+        />
       </div>
 
-      {/* Recent Activity Placeholder */}
+      {/* Recent Activity */}
       <div style={styles.recentActivity}>
-        <h3>Recent Activity</h3>
-        <p>No activity yet.</p>
+        <h3 style={styles.recentTitle}>Recent Activity</h3>
+        <p style={styles.noActivity}>No activity yet.</p>
       </div>
     </div>
   );
 };
 
+// Reusable StatCard component
+const StatCard = ({ title, count, loading }) => (
+  <div style={styles.card}>
+    <div style={styles.cardAccent}></div>
+    <div>
+      <p style={styles.cardTitle}>{title}</p>
+      <p style={styles.cardCount}>{loading ? "Loading..." : count}</p>
+    </div>
+  </div>
+);
+
 const styles = {
-  pageTitle: { fontSize: "22px", fontWeight: "600", marginBottom: "24px" },
-  cardsContainer: { display: "flex", gap: "20px", marginBottom: "30px" },
+  pageTitle: { fontSize: "24px", fontWeight: "700", marginBottom: "24px", color: "#111" },
+  cardsContainer: {
+    display: "flex",
+    gap: "20px",
+    marginBottom: "30px",
+    flexWrap: "wrap", // ready for mobile
+  },
   card: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    padding: "20px",
-    borderRadius: "10px",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.05)",
-    fontWeight: "500",
+    position: "relative",
+    flex: "1 1 200px", // responsive width
+    backgroundColor: "#fff",
+    padding: "20px 20px 20px 12px",
+    borderRadius: "12px",
+    boxShadow: "0 6px 12px rgba(0,0,0,0.08)",
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer",
+    transition: "transform 0.2s, box-shadow 0.2s",
+    minWidth: "200px",
   },
+  cardAccent: {
+    width: "6px",
+    height: "100%",
+    backgroundColor: "#B10F3A",
+    borderRadius: "6px",
+    marginRight: "12px",
+  },
+  cardTitle: { fontSize: "14px", fontWeight: "500", color: "#333", marginBottom: "6px" },
+  cardCount: { fontSize: "20px", fontWeight: "700", color: "#B10F3A" },
   recentActivity: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fff",
     padding: "20px",
-    borderRadius: "8px",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+    borderRadius: "12px",
+    boxShadow: "0 4px 8px rgba(0,0,0,0.05)",
   },
+  recentTitle: { fontSize: "18px", fontWeight: "600", marginBottom: "12px", color: "#111" },
+  noActivity: { color: "#555", fontStyle: "italic" },
 };
 
 export default DashboardHome;
