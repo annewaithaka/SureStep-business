@@ -46,7 +46,7 @@ app.register_blueprint(services_bp, url_prefix="/api/services")
 app.register_blueprint(dashboard_bp, url_prefix="/api/dashboard")
 app.register_blueprint(portfolio_bp, url_prefix="/api/portfolio")
 app.register_blueprint(notifications_bp, url_prefix="/api/notifications")
- app.register_blueprint(ai_bp, url_prefix="/api/ai-readiness")
+app.register_blueprint(ai_bp, url_prefix="/api/ai-readiness")
 
   @app.route("/")
    def index():
