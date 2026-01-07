@@ -4,7 +4,18 @@ import api from "../../api/axiosConfig";
 const DashboardAIReadiness = () => {
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [summary, setSummary] = useState({ averageScore: 0, totalCompanies: 0 });
+  const [summary, setSummary] = useState({
+    averageScore: 0,
+    totalCompanies: 0,
+  });
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth < 768);
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
 
   useEffect(() => {
     const fetchSubmissions = async () => {
@@ -20,7 +31,7 @@ const DashboardAIReadiness = () => {
           });
         }
       } catch (err) {
-        console.error(err);
+        console.error("Failed to fetch AI readiness:", err);
       } finally {
         setLoading(false);
       }
@@ -32,42 +43,77 @@ const DashboardAIReadiness = () => {
     <div>
       <h2 style={styles.pageTitle}>AI Readiness</h2>
 
+      {/* Summary Cards */}
       <div style={styles.cards}>
         <SummaryCard title="Average Score" value={summary.averageScore} />
         <SummaryCard title="Companies Assessed" value={summary.totalCompanies} />
       </div>
 
+      {/* Data Section */}
       <div style={styles.card}>
-        <div style={styles.tableWrapper}>
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th style={styles.th}>Company</th>
-                <th style={styles.th}>Score</th>
-                <th style={styles.th}>Size</th>
-                <th style={styles.th}>Summary</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan="4" style={styles.center}>Loading…</td></tr>
-              ) : submissions.length === 0 ? (
-                <tr><td colSpan="4" style={styles.center}>No submissions yet.</td></tr>
-              ) : (
-                submissions.map((s) => (
-                  <tr key={s.id}>
-                    <td style={styles.td}>{s.company_name}</td>
-                    <td style={{ ...styles.td, fontWeight: "600", color: "#B10F3A" }}>
-                      {s.score}
+        {isMobile ? (
+          <div style={styles.mobileList}>
+            {loading ? (
+              <p style={styles.center}>Loading…</p>
+            ) : submissions.length === 0 ? (
+              <p style={styles.center}>No submissions yet.</p>
+            ) : (
+              submissions.map((s) => (
+                <div key={s.id} style={styles.mobileItem}>
+                  <Row label="Company" value={s.company_name} />
+                  <Row
+                    label="Score"
+                    value={<span style={styles.score}>{s.score}</span>}
+                  />
+                  <Row label="Company Size" value={s.company_size} />
+                  <Row
+                    label="Summary"
+                    value={<span style={styles.summaryText}>{s.answers_summary}</span>}
+                  />
+                </div>
+              ))
+            )}
+          </div>
+        ) : (
+          <div style={styles.tableWrapper}>
+            <table style={styles.table}>
+              <thead>
+                <tr>
+                  <th style={styles.th}>Company</th>
+                  <th style={styles.th}>Score</th>
+                  <th style={styles.th}>Size</th>
+                  <th style={styles.th}>Summary</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr>
+                    <td colSpan="4" style={styles.center}>
+                      Loading…
                     </td>
-                    <td style={styles.td}>{s.company_size}</td>
-                    <td style={styles.td}>{s.answers_summary}</td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                ) : submissions.length === 0 ? (
+                  <tr>
+                    <td colSpan="4" style={styles.center}>
+                      No submissions yet.
+                    </td>
+                  </tr>
+                ) : (
+                  submissions.map((s) => (
+                    <tr key={s.id}>
+                      <td style={styles.td}>{s.company_name}</td>
+                      <td style={{ ...styles.td, ...styles.score }}>
+                        {s.score}
+                      </td>
+                      <td style={styles.td}>{s.company_size}</td>
+                      <td style={styles.td}>{s.answers_summary}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -83,10 +129,27 @@ const SummaryCard = ({ title, value }) => (
   </div>
 );
 
-const styles = {
-  pageTitle: { fontSize: "24px", fontWeight: "700", marginBottom: "24px" },
+const Row = ({ label, value }) => (
+  <div style={styles.mobileRow}>
+    <span style={styles.mobileLabel}>{label}</span>
+    <span>{value}</span>
+  </div>
+);
 
-  cards: { display: "flex", gap: "20px", flexWrap: "wrap", marginBottom: "24px" },
+const styles = {
+  pageTitle: {
+    fontSize: "24px",
+    fontWeight: "700",
+    marginBottom: "24px",
+  },
+
+  /* Summary Cards */
+  cards: {
+    display: "flex",
+    gap: "20px",
+    flexWrap: "wrap",
+    marginBottom: "24px",
+  },
 
   summaryCard: {
     flex: "1 1 220px",
@@ -98,11 +161,20 @@ const styles = {
     gap: "12px",
   },
 
-  accent: { width: "6px", backgroundColor: "#B10F3A", borderRadius: "6px" },
+  accent: {
+    width: "6px",
+    backgroundColor: "#B10F3A",
+    borderRadius: "6px",
+  },
 
   summaryTitle: { fontSize: "14px", color: "#555" },
-  summaryValue: { fontSize: "22px", fontWeight: "700", color: "#B10F3A" },
+  summaryValue: {
+    fontSize: "22px",
+    fontWeight: "700",
+    color: "#B10F3A",
+  },
 
+  /* Card */
   card: {
     backgroundColor: "#fff",
     borderRadius: "12px",
@@ -110,11 +182,72 @@ const styles = {
     boxShadow: "0 6px 12px rgba(0,0,0,0.06)",
   },
 
+  /* Desktop table */
   tableWrapper: { overflowX: "auto" },
-  table: { width: "100%", borderCollapse: "collapse", minWidth: "700px" },
-  th: { padding: "12px", textAlign: "left", background: "#f8fafc", fontSize: "13px" },
-  td: { padding: "12px", borderTop: "1px solid #e5e7eb", fontSize: "14px" },
-  center: { textAlign: "center", padding: "24px", color: "#6b7280" },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    minWidth: "700px",
+  },
+
+  th: {
+    padding: "12px",
+    textAlign: "left",
+    backgroundColor: "#f8fafc",
+    fontSize: "13px",
+    fontWeight: "600",
+  },
+
+  td: {
+    padding: "12px",
+    borderTop: "1px solid #e5e7eb",
+    fontSize: "14px",
+  },
+
+  /* Mobile list */
+  mobileList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+  },
+
+  mobileItem: {
+    border: "1px solid #e5e7eb",
+    borderRadius: "10px",
+    padding: "12px",
+    backgroundColor: "#fff",
+  },
+
+  mobileRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "12px",
+    marginBottom: "8px",
+    fontSize: "14px",
+  },
+
+  mobileLabel: {
+    color: "#6b7280",
+    fontWeight: "500",
+    minWidth: "100px",
+  },
+
+  score: {
+    color: "#B10F3A",
+    fontWeight: "700",
+  },
+
+  summaryText: {
+    maxWidth: "65%",
+    textAlign: "right",
+    lineHeight: "1.4",
+  },
+
+  center: {
+    textAlign: "center",
+    padding: "24px",
+    color: "#6b7280",
+  },
 };
 
 export default DashboardAIReadiness;
