@@ -19,7 +19,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/api/contact", form); // your backend endpoint
+      await axios.post("/contact", form); // your backend endpoint
       toast.success("Message sent successfully!");
       setForm({ name: "", email: "", message: "" });
     } catch (err) {

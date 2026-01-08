@@ -1,5 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../../api/axiosConfig";
+
+// Map activity type → icon + color
+const activityConfig = {
+  lead: { icon: "🧑", color: "#2563eb", url: "/dashboard/leads" }, // blue
+  ai_readiness: { icon: "🤖", color: "#B10F3A", url: "/dashboard/ai-readiness" }, // burgundy
+  contact_message: { icon: "✉️", color: "#16a34a", url: "/dashboard/contacts" }, // green
+};
+
+const normalizeType = (type) => {
+  if (type === "message" || type === "contact") return "contact_message";
+  return type;
+};
 
 const DashboardHome = () => {
   const [counts, setCounts] = useState({
@@ -7,9 +20,13 @@ const DashboardHome = () => {
     messages: 0,
     aiReadiness: 0,
   });
-  const [loading, setLoading] = useState(true);
+  const [activities, setActivities] = useState([]);
+  const [loadingCounts, setLoadingCounts] = useState(true);
+  const [loadingActivities, setLoadingActivities] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Fetch counts
     const fetchCounts = async () => {
       try {
         const [leadsRes, messagesRes, aiRes] = await Promise.all([
@@ -25,11 +42,32 @@ const DashboardHome = () => {
       } catch (err) {
         console.error("Failed to fetch counts:", err);
       } finally {
-        setLoading(false);
+        setLoadingCounts(false);
       }
     };
     fetchCounts();
+
+    // Fetch recent activities
+    const fetchActivities = async () => {
+      try {
+        const res = await api.get("/dashboard/recent-activity");
+        setActivities(res.data.slice(0, 5)); // most recent 5
+      } catch (err) {
+        console.error("Failed to fetch activities:", err);
+      } finally {
+        setLoadingActivities(false);
+      }
+    };
+    fetchActivities();
   }, []);
+
+  const handleActivityClick = (activity) => {
+    const type = normalizeType(activity.type);
+    const config = activityConfig[type];
+    if (config && config.url) {
+      window.location.href = `http://localhost:5173${config.url}`;
+    }
+  };
 
   return (
     <div>
@@ -37,27 +75,53 @@ const DashboardHome = () => {
 
       {/* Stats Cards */}
       <div style={styles.cardsContainer}>
-        <StatCard
-          title="Total Leads"
-          count={counts.leads}
-          loading={loading}
-        />
-        <StatCard
-          title="Contact Messages"
-          count={counts.messages}
-          loading={loading}
-        />
-        <StatCard
-          title="AI Readiness"
-          count={counts.aiReadiness}
-          loading={loading}
-        />
+        <StatCard title="Total Leads" count={counts.leads} loading={loadingCounts} />
+        <StatCard title="Contact Messages" count={counts.messages} loading={loadingCounts} />
+        <StatCard title="AI Readiness" count={counts.aiReadiness} loading={loadingCounts} />
       </div>
 
       {/* Recent Activity */}
       <div style={styles.recentActivity}>
         <h3 style={styles.recentTitle}>Recent Activity</h3>
-        <p style={styles.noActivity}>No activity yet.</p>
+
+        {loadingActivities ? (
+          <div style={styles.skeletonWrapper}>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} style={styles.activitySkeleton}></div>
+            ))}
+          </div>
+        ) : activities.length === 0 ? (
+          <p style={styles.noActivity}>No activity yet.</p>
+        ) : (
+          activities.map((item, idx) => {
+            const type = normalizeType(item.type);
+            const config = activityConfig[type];
+
+            return (
+              <div
+                key={idx}
+                style={styles.activityItem}
+                onClick={() => handleActivityClick(item)}
+              >
+                <div
+                  style={{
+                    ...styles.activityIcon,
+                    backgroundColor: config.color,
+                  }}
+                >
+                  {config.icon}
+                </div>
+                <div style={styles.activityContent}>
+                  <p style={styles.activityTitle}>{item.title}</p>
+                  <p style={styles.activityDesc}>{item.description}</p>
+                  <p style={styles.activityTime}>
+                    {new Date(item.created_at).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );
@@ -76,15 +140,10 @@ const StatCard = ({ title, count, loading }) => (
 
 const styles = {
   pageTitle: { fontSize: "24px", fontWeight: "700", marginBottom: "24px", color: "#111" },
-  cardsContainer: {
-    display: "flex",
-    gap: "20px",
-    marginBottom: "30px",
-    flexWrap: "wrap", // ready for mobile
-  },
+  cardsContainer: { display: "flex", gap: "20px", marginBottom: "30px", flexWrap: "wrap" },
   card: {
     position: "relative",
-    flex: "1 1 200px", // responsive width
+    flex: "1 1 200px",
     backgroundColor: "#fff",
     padding: "20px 20px 20px 12px",
     borderRadius: "12px",
@@ -95,15 +154,10 @@ const styles = {
     transition: "transform 0.2s, box-shadow 0.2s",
     minWidth: "200px",
   },
-  cardAccent: {
-    width: "6px",
-    height: "100%",
-    backgroundColor: "#B10F3A",
-    borderRadius: "6px",
-    marginRight: "12px",
-  },
+  cardAccent: { width: "6px", height: "100%", backgroundColor: "#B10F3A", borderRadius: "6px", marginRight: "12px" },
   cardTitle: { fontSize: "14px", fontWeight: "500", color: "#333", marginBottom: "6px" },
   cardCount: { fontSize: "20px", fontWeight: "700", color: "#B10F3A" },
+
   recentActivity: {
     backgroundColor: "#fff",
     padding: "20px",
@@ -112,6 +166,45 @@ const styles = {
   },
   recentTitle: { fontSize: "18px", fontWeight: "600", marginBottom: "12px", color: "#111" },
   noActivity: { color: "#555", fontStyle: "italic" },
+
+  activityItem: {
+    display: "flex",
+    alignItems: "flex-start",
+    gap: "12px",
+    padding: "12px 0",
+    borderBottom: "1px solid #f0f0f0",
+    cursor: "pointer",
+    transition: "background 0.15s",
+  },
+  activityIcon: {
+    width: "36px",
+    height: "36px",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "18px",
+    color: "#fff",
+    flexShrink: 0,
+  },
+  activityContent: { flex: 1 },
+  activityTitle: { fontSize: "14px", fontWeight: "600", marginBottom: "2px", color: "#111" },
+  activityDesc: { fontSize: "13px", color: "#555", marginBottom: "2px" },
+  activityTime: { fontSize: "11px", color: "#999" },
+
+  skeletonWrapper: { display: "flex", flexDirection: "column", gap: "10px" },
+  activitySkeleton: {
+    height: "50px",
+    backgroundColor: "#e5e7eb",
+    borderRadius: "8px",
+    animation: "pulse 1.2s infinite",
+  },
+
+  "@keyframes pulse": {
+    "0%": { opacity: 1 },
+    "50%": { opacity: 0.4 },
+    "100%": { opacity: 1 },
+  },
 };
 
 export default DashboardHome;
