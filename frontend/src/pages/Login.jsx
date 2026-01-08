@@ -10,7 +10,6 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // ✅ Redirect if already logged in
   if (isAuthenticated()) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -30,7 +29,7 @@ const Login = () => {
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        <h1 style={styles.brand}>SureStep</h1>
+        <h1 style={styles.h1}>SureStep</h1>
         <h2 style={styles.title}>Admin Login</h2>
         <p style={styles.subtitle}>Access the operations dashboard</p>
 
@@ -79,6 +78,13 @@ const styles = {
     justifyContent: "center",
     padding: "20px",
   },
+  h1: {
+    color: "#B10F3A",
+    fontSize: "28px",
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: "8px",
+  },
   card: {
     width: "100%",
     maxWidth: "420px",
@@ -86,13 +92,6 @@ const styles = {
     borderRadius: "14px",
     padding: "32px",
     boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
-  },
-  brand: {
-    fontSize: "20px",
-    fontWeight: "700",
-    color: "#2563eb",
-    marginBottom: "8px",
-    textAlign: "center",
   },
   title: {
     fontSize: "22px",
@@ -142,7 +141,7 @@ const styles = {
     padding: "12px",
     borderRadius: "10px",
     border: "none",
-    backgroundColor: "#2563eb",
+    backgroundColor: "#B10F3A",
     color: "#ffffff",
     fontSize: "15px",
     fontWeight: "600",
