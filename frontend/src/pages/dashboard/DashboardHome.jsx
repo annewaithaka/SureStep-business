@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axiosConfig";
 
-// Map activity type → icon + color
-const activityConfig = {
-  lead: { icon: "🧑", color: "#2563eb", url: "/dashboard/leads" }, // blue
-  ai_readiness: { icon: "🤖", color: "#B10F3A", url: "/dashboard/ai-readiness" }, // burgundy
-  contact_message: { icon: "✉️", color: "#16a34a", url: "/dashboard/contacts" }, // green
+// Map activity type → icon + color + URL
+const urlMap = {
+  lead: "/dashboard/leads",
+  ai_readiness: "/dashboard/ai-readiness",
+  message: "/dashboard/contacts", // maps backend 'message' type
 };
 
+const activityConfig = {
+  lead: { icon: "🧑", color: "#2563eb" }, // blue
+  ai_readiness: { icon: "🤖", color: "#B10F3A" }, // burgundy
+  contact_message: { icon: "✉️", color: "#16a34a" }, // green
+};
+
+// Normalize type from backend
 const normalizeType = (type) => {
   if (type === "message" || type === "contact") return "contact_message";
   return type;
@@ -63,9 +70,10 @@ const DashboardHome = () => {
 
   const handleActivityClick = (activity) => {
     const type = normalizeType(activity.type);
-    const config = activityConfig[type];
-    if (config && config.url) {
-      window.location.href = `http://localhost:5173${config.url}`;
+    const url =
+      type === "contact_message" ? urlMap["message"] : urlMap[type];
+    if (url) {
+      navigate(url);
     }
   };
 
